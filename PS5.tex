@@ -1,0 +1,77 @@
+\documentclass[12pt]{article}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\textwidth}{6.5in}
+\setlength{\parindent}{0in}
+\setlength{\parskip}{\baselineskip}
+
+\newcommand\tab[1][1cm]{\hspace*{#1}}
+
+\usepackage{amsmath,amsfonts,amssymb,graphicx}
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\usepackage{fancyvrb}
+\usepackage{color}
+%\usepackage{proof}
+\usepackage{listings}
+%\usepackage{enumitem}
+
+
+\pagestyle{fancy}
+\title{CSCI 3753 Problem Set 5}
+
+\begin{document}
+
+\lhead{{\bf CSCI 3753 \\ Problem Set 5} }
+\rhead{{\bf Liam Kolber \\Spring 2018, CU-Boulder}}
+
+\textbf{\textit{RECITATION: 104}}\\
+\textbf{\textit{NUMBER OF HOURS TO COMPLETE PS: 4}}
+
+\begin{enumerate}
+    %PROBLEM 1
+   	\item{\textit{(10 pts) Consider a file system that uses inodes to represent files. Disk blocks are 4 KB in size, and a pointer to a disk block requires 4 bytes. This file system has 16 direct disk blocks, as well as single, double, and triple indirect disk blocks. What is the maximum size of a file that can be stored in this file system? What percentage of the required storage is overhead if the file is 100K bytes? 1000K bytes?}}
+	    \color{blue}
+	    $$(16 \cdot 4\text{ KB}) + (1024 \cdot 4 \text{ KB}) + (1024 \cdot 1024 \cdot 4 \text{ KB}) + (1024 \cdot 1024 \cdot 1024 \cdot 4 \text{ KB})$$ $$= 64 + 4096 + 4194304 + 4294967296 \text{ KB}$$ $$= 4299165760 \text{ KB}$$ $$\approx 4 \text{ TB}$$
+	    \color{black}
+    \item{\textit{(20 pts) Describe how a log based transactional file system (journaling) is beneficial for networked file systems.}}
+	   	\color{blue}
+	   	\par Journaling speeds up read/write times by writing to RAM and then moving that data to the HDD when most convenient. The OS can read/write to files more quickly when they are in RAM than if they needed to be swapped out. Networks already have their own inherent delays, and by decreasing the slow down from the significantly slower HDD speeds, networks can respond much more quickly and be more efficient.
+	    \color{black}
+    %PROBLEM 3
+    \item{\textit{(10 pts) Show pseudocode for a function to return the outer and inner index positions for the block indicated by file\_offset . Assume that BLOCK\_SIZE is the constant for the number of bytes per block and N\_INDEX is the constant for number of addresses stored in a block.}}	
+	    \color{blue}
+		\begin{verbatim}
+		FindBlockAddress(addr file_offset, addr *outer_index, addr *inner_index) {
+		  *inner_index = file_offset //file_offset is address of start of block
+		  //N_INDEX * BLOCKSIZE = total block size
+		  //total_blocksize + offset = address at end of block
+		  *outer_index = file_offset + (N_INDEX * BLOCKSIZE)
+		}
+		\end{verbatim}
+		\color{black}
+\newpage
+    %PROBLEM 4
+    \item{\textit{(20 pts) Based on the types of threats and security breaches we have covered, what type of security problems are Spectre and Meltdown?}}
+	    \color{blue}
+	   \begin{itemize}
+	   	\item \underline{Spectre:} A program breaks isolation between applications causing a program to reveal any sensitive or private information that was intended to be kept secret.
+	   	\item \underline{Meltdown:} A program can bypass security since it operates below the OS level. Once a drive has been unlocked by an encryption password, an unauthorized user can read any bit of memory they'd like due to out-of-order memory.
+	    \end{itemize}
+	    \color{black}
+
+    %PROBLEM 5
+    \item{\textit{(20 pts) Describe two advantages of encrypting data stored in the computer system?}}
+	    \color{blue}
+	   \begin{itemize}
+	   	\item Encrypted data is always encrypted until it is decrypted. In other words, even in states where the information could be vulnerable (i.e. data transfer between users), the information is next to impossible to decypher.
+	   	\item It also allows only authorized users to access sensitive or private information without the fear of others finding loopholes or back doors to bypass any kinds of locks.
+	   \end{itemize}
+	    \color{black}
+    %PROBLEM 6
+    \item{\textit{(20 pts) Is it always crucial to know that the message you have sent has arrived at its destination safely? If your answer is ``yes,'' explain why. If your answer is ``no,'' give appropriate examples.}}
+	    \color{blue}
+	    \par There are devices (i.e. radio transmitters) whose purpose is to do no more than simply broadcast information out for any device that wants to receive it. The radio doesn't need to know that others received it properly. Should anything ever go wrong with the system, those on the receiving end would know because the device broadcasting data has gone silent and can act accordingly. However, this system isn't foolproof as it places the responsibility on the receiver to monitor the broadcaster. In systems where an arrival signal is used, the broadcaster can determine on its own whether there are any issues and begin troubleshooting without the need of outside interference.
+	    \color{black}
+\end{enumerate}
+\end{document}

@@ -1,0 +1,25 @@
+Number for requestor thread = 1
+Number for resolver thread = 1
+Total run time: 38988 ticks
+
+Number for requestor thread = 1
+Number for resolver thread = 3
+Total run time: 36943 ticks
+
+Number for requestor thread = 3
+Number for resolver thread = 1
+Total run time: 34120 ticks
+
+Number for requestor thread = 3
+Number for resolver thread = 3
+Total run time: 37870 ticks
+
+Number for requestor thread = 5
+Number for resolver thread = 5
+Total run time: 39946 ticks
+
+Number for requestor thread = 8
+Number for resolver thread = 5
+Total run time: 41903 ticks
+
+The quickest run time was consistantly the attempt with 3 requestor threads and 1 resolver thread. I find this to make the most sense as the fastest run time we can get out of the resolver is with a single thread since only one thread can have access to the shared buffer at a time anyway. As far as the requestor number is concerned, the most optimal number would be 5 threads so each thread could be servicing a single file (the case with 8 threads is just wasting CPU cylces trying to divide up the work). Since the resolver process is slower than the requestor process, the 5 resolver threads in the 5-5 case have a larger negative impact than the positive gained from the 5 requestors leaving the 3-1 case to be the most optimal.

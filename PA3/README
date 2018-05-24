@@ -1,0 +1,10 @@
+Liam Kolber
+Programming Assignment 3
+CSCI 3753 - Spring 2018
+
+build with: make PA3
+clean with: make clean
+
+how-to-run: ./multi-lookup <#ofRequesters> <#ofResolvers> <path/results> <path/serviced> <path/inputs>
+
+eg: ./multi-lookup 3 3 results.txt services.txt input/names1.txt input/names2.txt input/names3.txt input/names4.txt input/names5.txt

@@ -1,79 +1,146 @@
+%----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
 \documentclass[12pt]{article}
 \setlength{\oddsidemargin}{0in}
 \setlength{\evensidemargin}{0in}
 \setlength{\textwidth}{6.5in}
-\setlength{\parindent}{0in}
-\setlength{\parskip}{\baselineskip}
+\setlength\parindent{24pt}
 \usepackage{amsmath,amsfonts,amssymb}
 \usepackage{graphicx}
 \usepackage{mathtools}
+\usepackage{indentfirst}
+\usepackage{flexisym}
 \usepackage{color}
+\usepackage{enumerate}
 \usepackage{fancyhdr}
+\usepackage{multicol}
 \pagestyle{fancy}
 %----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
 \begin{document}
-\lhead{{\bf CSCI 3753 \\ Problem Set 1} }
+\lhead{{\bf CSCI 3753 \\ Problem Set 4} }
 \rhead{{\bf Liam Kolber\\ Spring 2018, CU-Boulder}}
 \renewcommand{\headrulewidth}{0.4pt}
+
+\par \textbf{\textit{RECITATION: 104}}
+\par \textbf{\textit{NUMBER OF HOURS TO COMPLETE: 6 hours}}
+%----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
+% PROBLEM 1
 \begin{enumerate}
+	\item{\textit{(5 pts) Explain why the SSTF scheduling policy tends to favor middle cylinders over the innermost and outmost cylinders.}}
+	\color{blue}
+	\par This would allow for the shortest seek times because central disks have the shortest average distance to all tracks. The disks on the "edges" have much larger seek times should the scheduler schedule tracks on opposite ends.
+	\color{black}
 %----------------------------------------------------------------------------
-	\item \textit{What are the three high level features that are provided by an Operating System?}
-		\begin{enumerate}
-			\item \underline{Hardware Abstraction:} The OS controls use of hardware components among all of the applications and provides an easy link to communicating to said hardware so individual applications don't need to be aware of specific hardware details.
-			\item \underline{Resource Management:} The OS controls the access and division of computer resources (i.e. CPU) in order to maintain efficiency as well as speed. This prevents a single application from hogging everything and putting other (sometimes quick and efficient) processes from getting CPU time.
-			\item \underline{Protection:} The OS protects the system and its components by isolating processes. This protects applications and programs from affecting each other (unless intended) as well as limiting resource consumption to prevent one application from hogging it all and to prevent damage to components. Lastly, it also protects the OS from the user and applications unless specifically intended.
-	    \end{enumerate}
 %----------------------------------------------------------------------------
-	\item \textit{Why does an Operating System need protection from user code?} \\
-	The OS and user code share computer hardware in order to run. If a bug in user-written code prevents other processes or programs from executing properly, then the risk of damage or file corruption increases. OS's typically have multiple modes (i.e. user mode and kernel mode) that protect key processes when the user isn't intending to alter those processes.
+% PROBLEM 2
+	\item{\textit{(5 pts) Why is rotational latency usually NOT considered in disk scheduling?}}
+	\color{blue}
+	\par There is a level of imprecision when measuring the latency, and by the time the scheduler received this information from the disk, the information would already be "outdated" due to the variability in latency. For this reason, most disks just don't communicate this information.
+	\color{black}
 %----------------------------------------------------------------------------
-	\item \textit{What are the four major components of an Operating System?}
-		\begin{enumerate}
-			\item \underline{File Manager:} \\
-			The file manager handles the abstraction and organization of files on the system as well as reading from and writing to said files. It also helps in the search and listing of files for the user to easily interact with.
-			\item \underline{Memory Manager:} \\
-			The memory manager is responsible for keeping and organizing as many currently working process and information in memory as possible to increase the efficiency of the CPU. It is also responsible for deciding when and which process have access to certain sections of memory at any given time.
-			\item \underline{Process Manager:} \\
-			Also known as the scheduler, this components is responsible for organizing queued processes in order to (ideally) be as efficient as possible to ensure quick resolutions to all queued processes. 
-			\item \underline{Device Manager:} \\
-			The device manager handles interactions with all devices connected to the system to ensure proper communication between components as well as communication between the user and the system.
-		\end{enumerate}
 %----------------------------------------------------------------------------
-	\item \textit{How does a user application system code within the Operating System?}\\
-	User applications are able to code within the OS by the use of the \verb|trap| instruction. It works by toggling the mode bit to $0$ (entering Kernel Mode) and is referred to as a system call. When the system call ends,
+% PROBLEM 3
+	\item{\textit{(10 pts) What are the tradeoffs with rereading code pages from the file system versus using swap space to store them.}}
+	\color{blue}
+	\par Swap space has faster allocation speeds that the file system, which would allow for much higher data transfer speeds. However, unlike the file system, swap space requires startup time which would add a delay as opposed to simply paging out.
+	\color{black}
 %----------------------------------------------------------------------------
-	\item \textit{How are parameters passed to and results returned from a System Call?}\\
-	Parameters are passed to a System Call via a System Interrupt. The kernel then checks what interrupt has been made in order to see what system call is occurring. Any additional information is passed in registers or in memory, and once the kernel verifies the request and executes, the kernel flips the mode back from kernel mode and continues with the next instruction.
-%----------------------------------------------------------------------------
-	\item \textit{What are the steps taken to start up a computer?}\\
-	The very first thing to happen when a computer starts is a predetermined set of basic diagnostics in order to ensure that all necessary components are connected and functioning properly. The bios is then loaded which allows for enough control to communicate with the boot device carrying the Bootstrap program. The Bootstrap program then locates the OS, loads it into memory, and begins the process of starting up the OS.
-%----------------------------------------------------------------------------
-	\item \textit{What is a Virtual Machine and how does it differ from a physical machine?}\\
-	A virtual machine is a fully functioning operating system that operates on top of an already functioning OS. The benefit of these VM's is the fact that the user can save states of the VM allowing the user to tweak the OS without the fear of permanent damage. The major difference between a VM and traditional OS is in the structure. In a VM, an extra layer between the kernel of the host machine and the OS of the VM exists known as the "hypervisor." This layer exists to create multiple identical environments and allows for the management of the guest OS and any guest processes.
 %----------------------------------------------------------------------------
 \newpage
-	\item \textit{Describe the difference between multi-programming and multi-tasking?}\\
-	Multi programming is when CPU runs a certain program until it hits a "lightweight" stage (i.e. writing to a file) and begins running the next program in the queue. This can be tricky because an infinite loop could prevent further computations until it's resolved.\\
-	Multi-tasking is when the cpu is constantly switching between a set of programs in the queue at equal intervals. This maximizes efficiency as the CPU never has down time in the case of an unintentional infinite loop or something of the sort.
+% PROBLEM 4
+	\item{\textit{(30 pts) Suppose that a disk drive has 5,000 cylinders, numbered 0 to 4,999. The drive is currently serving a request at cylinder 2,150, and the previous request was at cylinder 1,805. The queue of pending requests, in FIFO order, is:
+			\begin{center}{2069, 1212, 2296, 2800, 544, 1618, 356, 1523, 4965, 3681}\end{center}
+	Starting from the current head position, what is the total distance (in cylinders) that the disk arm moves to satisfy all the pending requests for each of the following disk-scheduling algorithms?
+\begin{enumerate}
+	\item FCFS
+	\item SSTF
+	\item SCAN
+	\item LOOK
+	\item C-SCAN
+	\item C-LOOK
+\end{enumerate}}}
+	\color{blue}
+	\begin{enumerate}
+		\item $13011$ - first request processed first
+		\item $7586$ - selects request with shortest seek time from head position
+		\item $7492$ - moves back and forth across disk processing along the way
+		\item $7424$ - like SCAN except it doesn't seek to the ends unless necessary
+		\item $9917$ - after moving across disk once, moves back to beginning without processing
+		\item $9137$ - same as combining concept from LOOK and C-SCAN
+	\end{enumerate}
+	\color{black}
 %----------------------------------------------------------------------------
-	\item \textit{What is a context switch?}\\
-	A context switch is the concept of switching between programs. In order to do so, there is about $1\mu s$ of time in which the CPU need to save the state of the current program to not lose progress. This is called the context switch overhead.
 %----------------------------------------------------------------------------
-	\item \textit{Provide a timing chart for the processes listed below using multi-programming and another when using multi-tasking.}
-		\begin{center}
-			\begin{tabular}{ |c|c|c|c| } 
-				\hline
-				Process & Length & Arrival Time & IO (time,wait) \\ 
-				\hline\hline
-				P1 & 40 & 0 & (20,30) \\ 
-				\hline
-				P2 & 20 & 10 & none \\
-				\hline
-				P3 & 25 & 30 & none \\
-				\hline
-			\end{tabular}
-			\includegraphics[width=\textwidth]{IMG_0334.jpg}
-		\end{center}
+\newpage
+% PROBLEM 5
+	\item{\textit{(10 pts) Contrast the performance of the three allocation methods (contiguous, linked, indexed) for both sequential and random file access.}}
+	\color{blue}
+	\begin{itemize}
+		\item Contiguous
+		\par \underline{Sequential:} Since the file is stored contiguously, information can easily be accessed sequentially. It allows for a minimal number of seeks.
+		\par \underline{Random:} Can easily analyze the blocks adjacent to determine which "direction" the intended block is.
+		\item Linked
+		\par \underline{Sequential:} Requires more seek time due to the non-contiguous storage.
+		\par \underline{Random:} Not preferred as it may require following the links to several disk blocks until you arrive at the intended block.
+		\item Indexed
+		\par \underline{Sequential \& Random:} Works well for both since there exists a table of pointers to the data blocks minimizing any negative effects from random file access.
+	\end{itemize}
+	\color{black}
+%----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
+% PROBLEM 6
+	\item{\textit{(5 pts) Consider a system where free disk space is kept in a free-space list. Suppose the pointer to the free-space list is lost. Can the system reconstruct the free-space list? Explain your answer.}}
+	\color{blue}
+	\par Yes, the system can reconstruct the free-space list using a bitmap. All you need to do is go through the file system and flip bits (from 0 to 1) for every occupied block (1 meaning occupied). Every bit still 0 at the end is a free block.
+	\color{black}
+%----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
+% PROBLEM 7
+	\item{\textit{(5 pts) Consider a file system similar to the one used by UNIX (indexed allocation). How many disk operations are required to access the contents of a file at\\ \textbf{/dir1/dir2/file3}? Assume that none of the disk blocks is currently being cached.}}
+	\color{blue}
+	\par If we infer that the file takes up some $n$ number of blocks, then it would require $n+3$ disk operations read the contents of the file. $1$ for the root directory, $1$ for \textbf{dir1}, $1$ for \textbf{dir2}, and then $n$ to read in the file since it wasn't cached.
+	\color{black}
+%----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
+\newpage
+% PROBLEM 8
+	\item{\textit{(30 pts) You are asked to allocate a file according to either a File Allocation Table (FAT) or multi-level indexed allocation (UNIX inode - triply indirect). Assume that the file is 2000 disk blocks long, there are 4 KB per disk block, each pointer in the FAT occupies 4 bytes, the first index block contains 15 entries (of which 12 are direct, and one each is singly indirect, doubly indirect, and triply indirect - see slides or textbook), every other index block contains 15 entries (may be indirect depending on the nesting level), each index block entry takes 4 bytes, and unused index blocks don't count in the total memory cost, though unused entries in partially filled index blocks do count. How many bytes are used to lay out the file when using a:
+		\begin{enumerate}[a]
+			\item FAT file system?
+			\item UNIX-style file system?
+		\end{enumerate}
+			Now suppose that you wish to read the 1099'th block of the file. Assume each of the
+			following counts as one search operation:
+			\begin{itemize}
+				\item moving from one element to the next in a linked list
+				\item indexing into an index block
+				\item moving from index block to the next
+			\end{itemize}
+			How many searches are need to read block 1099 when using the
+		\begin{enumerate}[a]
+			\item[c] same FAT file system as above?
+			\item[d] same UNIX-style file system as above?
+		\end{enumerate} }}
+	\color{blue}
+			\begin{enumerate}[a]
+				\item $2000*4 = 8000$
+				\item
+				\begin{itemize}
+					\item first level index blocks: $(12*4)$ bytes
+					\item singly indirect blocks: $(15*4)$ bytes
+					\item doubly indirect blocks: $(13*4)+(15*4*2)$ bytes
+					\item triply indirect blocks: $(13*4)+(13*4*2)+(15*4*4)$ bytes
+					\item all other blocks: $(12*4)+(15*4)+(13*4)+(15*4*2)+(13*4)+(13*4*2)+(15*4*4)$
+				\end{itemize}
+				\item[c] $1099$
+				\item[d] The fourth.
+			\end{enumerate}
+	\color{black}
+%----------------------------------------------------------------------------
+%----------------------------------------------------------------------------
 \end{enumerate}
 \end{document}
+%----------------------------------------------------------------------------
 %----------------------------------------------------------------------------

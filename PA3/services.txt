@@ -1,0 +1,5 @@
+thread: 3254 is servicing input/names1.txt
+thread: 3254 is servicing input/names4.txt
+thread: 3254 is servicing input/names5.txt
+thread: 3253 is servicing input/names2.txt
+thread: 3255 is servicing input/names3.txt
